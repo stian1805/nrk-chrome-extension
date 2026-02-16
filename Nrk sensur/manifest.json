@@ -1,6 +1,6 @@
 {
   "name": "NRK Sensur",
-  "description": "Remove page content based on blocked phrases.",
+  "description": "Fjern artikler og innhold på NRK.no basert på nøkkelord du velger.",
   "version": "1.0",
   "manifest_version": 3,
   "icons": {
@@ -19,7 +19,7 @@
         "https://www.nrk.no/"
       ],
       "js": [
-        "scripts/content.js"
+        "content.js"
       ],
       "run_at": "document_start"
     }

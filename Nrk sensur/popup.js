@@ -12,7 +12,7 @@ const loadPhrases = () => {
 const renderPhrases = (phrases) => {
   phrasesList.innerHTML = "";
   if (phrases.length === 0) {
-    phrasesList.innerHTML = "<p style='color: #999; margin: 0;'>No phrases blocked yet.</p>";
+    phrasesList.innerHTML = "<p style='color: #999; margin: 0;'>Ingen fraser blokkert enda.</p>";
     return;
   }
   phrases.forEach((phrase, index) => {
@@ -20,7 +20,7 @@ const renderPhrases = (phrases) => {
     item.className = "phrase-item";
     item.innerHTML = `
       <span class="phrase-text">${escapeHtml(phrase)}</span>
-      <button class="remove-btn" data-index="${index}">Remove</button>
+      <button class="remove-btn" data-index="${index}">Fjern</button>
     `;
     phrasesList.appendChild(item);
   });
