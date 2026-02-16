@@ -1,9 +1,5 @@
 (() => {
-	const blockedPhrases = [
-		"OL",
-        "nrk tv og nrk radio",
-        "Daglige minispill fra NRK"
-	];
+	let blockedPhrases = [];
 
 	const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
@@ -12,6 +8,13 @@
 			const escaped = escapeRegex(phrase);
 			const pattern = new RegExp(`\\b${escaped}\\b`, "i");
 			return pattern.test(text);
+		});
+	};
+
+	const loadPhrases = (callback) => {
+		chrome.storage.sync.get(["blockedPhrases"], (result) => {
+			blockedPhrases = result.blockedPhrases || [];
+			if (callback) callback();
 		});
 	};
 
@@ -29,6 +32,16 @@
 			current = current.parentElement;
 		}
 		return highestDiv || node.parentElement || null;
+	};
+
+	const cleanupEmptySections = (root) => {
+		const sections = root.querySelectorAll("section");
+		sections.forEach((section) => {
+			const text = section.textContent.trim();
+			if (!text) {
+				section.remove();
+			}
+		});
 	};
 
 	const removeMatchesIn = (root) => {
@@ -56,6 +69,7 @@
 		}
 
 		removals.forEach((element) => element.remove());
+		cleanupEmptySections(root);
 	};
 
 	const start = () => {
@@ -83,9 +97,23 @@
 		});
 	};
 
-	if (document.readyState === "loading") {
-		document.addEventListener("DOMContentLoaded", start, { once: true });
-	} else {
-		start();
-	}
+	const listener = (changes, areaName) => {
+		if (areaName === "sync" && changes.blockedPhrases) {
+			blockedPhrases = changes.blockedPhrases.newValue || [];
+			const target = document.body;
+			if (target) {
+				removeMatchesIn(target);
+			}
+		}
+	};
+
+	loadPhrases(() => {
+		if (document.readyState === "loading") {
+			document.addEventListener("DOMContentLoaded", start, { once: true });
+		} else {
+			start();
+		}
+	});
+
+	chrome.storage.onChanged.addListener(listener);
 })();

@@ -6,10 +6,17 @@
   "icons": {
     "128": "icon.png"
   },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "NRK Sensur Settings"
+  },
+  "permissions": [
+    "storage"
+  ],
   "content_scripts": [
     {
       "matches": [
-        "https://www.nrk.no/*"
+        "https://www.nrk.no/"
       ],
       "js": [
         "scripts/content.js"
