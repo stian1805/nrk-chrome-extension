@@ -1,0 +1,20 @@
+{
+  "name": "NRK Sensur",
+  "description": "Remove page content based on blocked phrases.",
+  "version": "1.0",
+  "manifest_version": 3,
+  "icons": {
+    "128": "icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.nrk.no/*"
+      ],
+      "js": [
+        "scripts/content.js"
+      ],
+      "run_at": "document_start"
+    }
+  ]
+}
